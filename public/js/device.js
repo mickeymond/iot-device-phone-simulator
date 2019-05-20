@@ -19,7 +19,8 @@
 	az = 0,
 	oa = 0,
 	ob = 0,
-	og = 0;
+	og = 0,
+	downLink = 0;
 
 	var client;
 	var iot_host;
@@ -69,6 +70,13 @@
 		document.getElementById("beta").innerHTML = ob.toFixed(2);
 		document.getElementById("gamma").innerHTML = og.toFixed(2);
 	};
+
+	window.navigator.connection.onchange = function(event) {
+		downLink = (event.currentTarget.downlink || 0);
+		// console.log(event.currentTarget.downlink);
+
+		document.getElementById("downlink").innerHTML = downLink.toFixed(2);
+	}
 
 	window.msgCount = 0;
 
@@ -148,7 +156,7 @@
 	}
 
 	function changeConnectionStatusImage(image) {
-		// document.getElementById("connectionImage").src = image;
+		document.getElementById("connectionImage").src = image;
 	}
 
 	function getParameterByName(name) {
