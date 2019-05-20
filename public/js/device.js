@@ -132,7 +132,8 @@
 			onSuccess: onConnectSuccess,
 			onFailure: onConnectFailure,
 			userName: "use-token-auth",
-			password: window.password
+			password: window.password,
+			useSSL: true
 		});
 	}
 
@@ -160,7 +161,7 @@
 	$("#connect").on("click", function() {
 		var org = $("input[name=org]").val();
 		window.iot_host = org + ".messaging.internetofthings.ibmcloud.com";
-		window.iot_port = 1883;
+		window.iot_port = 8883;
 		window.devicetype = $("input[name=devicetype]").val();
 		window.deviceId = $("input[name=device]").val();
 		window.password = $("input[name=token]").val();
