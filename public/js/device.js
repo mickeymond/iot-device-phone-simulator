@@ -20,7 +20,9 @@
 	oa = 0,
 	ob = 0,
 	og = 0,
-	downLink = 0;
+	lat = 0,
+	lng = 0,
+	bat = 0;
 
 	var client;
 	var iot_host;
@@ -71,12 +73,24 @@
 		document.getElementById("gamma").innerHTML = og.toFixed(2);
 	};
 
-	window.navigator.connection.onchange = function(event) {
-		downLink = (event.currentTarget.downlink || 0);
-		// console.log(event.currentTarget.downlink);
+	setInterval(function() {
+		window.navigator.geolocation.getCurrentPosition(function(position) {
+			// console.log(position);
+			lat = position.coords.latitude || 0;
+			lng = position.coords.longitude || 0;
 
-		document.getElementById("downlink").innerHTML = downLink.toFixed(2);
-	}
+			document.getElementById("lat").innerHTML = lat.toFixed(2);
+			document.getElementById("lng").innerHTML = lng.toFixed(2);
+		});
+	}, 1000);
+
+	setInterval(function() {
+		window.navigator.getBattery().then(data => {
+			bat = data.level || 0;
+
+			document.getElementById("bat").innerHTML = bat.toFixed(2);
+		});
+	}, 1000);
 
 	window.msgCount = 0;
 
@@ -92,7 +106,10 @@
 					"az": parseFloat(az.toFixed(2)),
 					"oa": parseFloat(oa.toFixed(2)),
 					"ob": parseFloat(ob.toFixed(2)),
-					"og": parseFloat(og.toFixed(2))
+					"og": parseFloat(og.toFixed(2)),
+					"lat": parseFloat(lat.toFixed(2)),
+					"lng": parseFloat(lng.toFixed(2)),
+					"bat": parseFloat(bat.toFixed(2)),
 				}
 			};
 			var message = new Paho.MQTT.Message(JSON.stringify(payload));
@@ -156,7 +173,7 @@
 	}
 
 	function changeConnectionStatusImage(image) {
-		document.getElementById("connectionImage").src = image;
+		// document.getElementById("connectionImage").src = image;
 	}
 
 	function getParameterByName(name) {
